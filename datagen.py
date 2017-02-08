@@ -137,12 +137,12 @@ def get_definitions_from_file(definition_file):
         definition_map[code_point] = definition
     return definition_map
 
-#filename = input("Filename: ")
+filename = input("Filename: ")
 
-#if os.path.isfile(os.path.join('dat', filename)):
-#    print("%s already exists" % filename)
-#else:
-#    print("Creating new file %s" % filename)
+if os.path.isfile(os.path.join('dat', filename)):
+    print("%s already exists" % filename)
+else:
+    print("Creating new file %s" % filename)
 
 data = []
 
@@ -160,7 +160,8 @@ definition = get_definitions()
 
 while True:
     text = input("Gimme pinyin: ")
-    print("You entered %s" % repr(text))
+    if text in['quit', 'q', 'n', 'N', 'c']:
+        break
     codes = pinyin[normalize_tone(text)]
 
     if not codes:
@@ -186,5 +187,26 @@ while True:
     pprint(data)
     print()
 
-#while True:
-#    pinyin = input("Enter pinyin for the character: ")
+print("Writing the following to %s" % filename)
+print(repr(data))
+
+with open(filename, 'w') as f:
+    for item in data:
+        img = ""
+        file_path = "/home/stephen/Documents/Anki/User 1/collection.media/%s.svg" % item[0];
+        if os.path.isfile(file_path):
+            img = '''<img class="order" src='%s.svg' />''' % item[0]
+        else:
+            print(file_path, "not a resource")
+
+        f.write("%s; %s; \"%s\"; %s;\n" % (item[0], item[1], item[2], img))
+
+
+
+
+
+
+
+
+
+
